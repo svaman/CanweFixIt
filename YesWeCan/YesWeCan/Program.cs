@@ -35,17 +35,17 @@ namespace YesWeCan
                     )
                     .ToString()
                     .Write(s => s.Contains("Failed") ? ConsoleColor.Red : ConsoleColor.Green);
-                
 
-                //(await Client.GetStringAsync("http://localhost:5010/v1/valuations/"))
-                //    .ParseJson<IList<MarketValuation>>()
-                //    .Verify(
-                //        d => d.Count == 1,
-                //        _ => true,
-                //        d => d.First().Name == "DataValueTotal" && d.First().Total == 13332
-                //    )
-                //    .ToString()
-                //    .Write(s => s.Contains("Failed") ? ConsoleColor.Red : ConsoleColor.Green);
+
+                (await Client.GetStringAsync("http://localhost:5010/v1/valuations/"))
+                    .ParseJson<IList<MarketValuation>>()
+                    .Verify(
+                        d => d.Count == 1,
+                        _ => true,
+                        d => d.First().Name == "DataValueTotal" && d.First().Total == 13332
+                    )
+                    .ToString()
+                    .Write(s => s.Contains("Failed") ? ConsoleColor.Red : ConsoleColor.Green);
             }
             catch (Exception e)
             {

@@ -40,6 +40,14 @@ INNER JOIN Instrument as i on m.Sedol = i.Sedol
 WHERE   m.Active = 1");
         }
 
+        public async Task<IEnumerable<Valuation>> Valuations()
+        {
+            return await _connection.QueryAsync<Valuation>(@"
+SELECT  'DataValueTotal' as 'Name', SUM(DataValue) as 'Total' 
+FROM    MarketData 
+WHERE   Active = 1");
+        }
+
         /// <summary>
         /// This is complete and will correctly load the test data.
         /// It is called during app startup 

@@ -8,6 +8,7 @@ namespace CanWeFixIt.Data
     {
         Task<IEnumerable<Instrument>> Instruments();
         Task<IEnumerable<MarketDataDto>> MarketData();
+        Task<IEnumerable<Valuation>> Valuations();
         void SetupDatabase();
     }
 }
