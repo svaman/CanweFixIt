@@ -20,12 +20,12 @@ namespace YesWeCan
                     .Verify(
                         d => d.Count == 2,
                         d => d.All(x => x.Active),
-                        d => d.All(x => x.Id is 2 or 4) && 
+                        d => d.All(x => x.Id is 2 or 4) &&
                              d.All(x => x.InstrumentId is 2 or 4)
                         )
                     .ToString()
                     .Write(s => s.Contains("Failed") ? ConsoleColor.Red : ConsoleColor.Green);
-                
+
                 (await Client.GetStringAsync("http://localhost:5010/v1/instruments/"))
                     .ParseJson<IList<Instrument>>()
                     .Verify(
@@ -35,7 +35,7 @@ namespace YesWeCan
                     )
                     .ToString()
                     .Write(s => s.Contains("Failed") ? ConsoleColor.Red : ConsoleColor.Green);
-                
+
 
                 (await Client.GetStringAsync("http://localhost:5010/v1/valuations/"))
                     .ParseJson<IList<MarketValuation>>()
