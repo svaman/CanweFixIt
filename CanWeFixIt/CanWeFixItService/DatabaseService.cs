@@ -25,12 +25,19 @@ namespace CanWeFixIt.Data
 
         public async Task<IEnumerable<Instrument>> Instruments()
         {
-            return await _connection.QueryAsync<Instrument>("SELECT Id, Sedol, Name, Active FROM Instrument where Active = 1");
+            return await _connection.QueryAsync<Instrument>(@"
+SELECT  Id, Sedol, Name, Active 
+FROM    Instrument 
+WHERE   Active = 1");
         }
 
-        public async Task<IEnumerable<MarketData>> MarketData()
+        public async Task<IEnumerable<MarketDataDto>> MarketData()
         {
-            return await _connection.QueryAsync<MarketData>("SELECT Id, DataValue FROM MarketData WHERE Active = 0");
+            return await _connection.QueryAsync<MarketDataDto>(@"
+SELECT  m.Id, m.DataValue, i.Id as 'InstrumentId', m.Active 
+FROM    MarketData as m 
+INNER JOIN Instrument as i on m.Sedol = i.Sedol 
+WHERE   m.Active = 1");
         }
 
         /// <summary>

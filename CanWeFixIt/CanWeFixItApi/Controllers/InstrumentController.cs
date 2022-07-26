@@ -23,7 +23,7 @@ namespace CanWeFixIt.Api.Controllers
         // GET
         public async Task<ActionResult<IEnumerable<Instrument>>> Get()
         {
-            _logger.LogInformation("Instrument get called");
+            _logger.LogInformation("InstrumentController Get() called");
             return Ok(_database.Instruments().Result);
         }
     }

@@ -7,7 +7,7 @@ namespace CanWeFixIt.Data
     public interface IDatabaseService
     {
         Task<IEnumerable<Instrument>> Instruments();
-        Task<IEnumerable<MarketData>> MarketData();
+        Task<IEnumerable<MarketDataDto>> MarketData();
         void SetupDatabase();
     }
 }
