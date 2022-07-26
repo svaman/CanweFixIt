@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CanWeFixItService;
+using CanWeFixIt.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CanWeFixItApi.Controllers
 {
     [ApiController]
-    [Route("v2/marketdata")]
+    [Route("v1/marketdata")]
     public class MarketDataController : ControllerBase
     {
         // GET

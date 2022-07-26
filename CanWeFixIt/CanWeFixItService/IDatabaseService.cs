@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using CanWeFixIt.Domain;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CanWeFixItService
+namespace CanWeFixIt.Data
 {
     public interface IDatabaseService
     {

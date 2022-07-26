@@ -1,31 +1,31 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
-using Microsoft.Data.Sqlite;
+using CanWeFixIt.Domain;
+using System.Data;
 
-namespace CanWeFixItService
+namespace CanWeFixIt.Data
 {
     public class DatabaseService : IDatabaseService
     {
         // See SQLite In-Memory example:
         // https://github.com/dotnet/docs/blob/main/samples/snippets/standard/data/sqlite/InMemorySample/Program.cs
-        
+
         // Using a name and a shared cache allows multiple connections to access the same
         // in-memory database
-        const string connectionString = "Data Source=DatabaseService;Mode=Memory;Cache=Shared";
-        private SqliteConnection _connection;
+        private IDbConnection _connection;
 
-        public DatabaseService()
+        public DatabaseService(IDbConnection connection)
         {
             // The in-memory database only persists while a connection is open to it. To manage
             // its lifetime, keep one open connection around for as long as you need it.
-            _connection = new SqliteConnection(connectionString);
+            _connection = connection;
             _connection.Open();
         }
-        
+
         public async Task<IEnumerable<Instrument>> Instruments()
         {
-            return await _connection.QueryAsync<Instrument>("");
+            return await _connection.QueryAsync<Instrument>("SELECT Id, Sedol, Name, Active FROM Instrument where Active = 1");
         }
 
         public async Task<IEnumerable<MarketData>> MarketData()
@@ -59,7 +59,7 @@ namespace CanWeFixItService
                        (9, 'Sedol9', 'Name9', 0)";
 
             _connection.Execute(createInstruments);
-            
+
             const string createMarketData = @"
                 CREATE TABLE marketdata
                 (

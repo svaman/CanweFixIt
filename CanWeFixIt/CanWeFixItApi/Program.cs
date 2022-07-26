@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace CanWeFixItApi
+namespace CanWeFixIt.Api
 {
     public class Program
     {

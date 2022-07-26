@@ -1,12 +1,15 @@
-using CanWeFixItService;
+using CanWeFixIt.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System.Data;
 
-namespace CanWeFixItApi
+namespace CanWeFixIt.Api
 {
     public class Startup
     {
@@ -21,11 +24,20 @@ namespace CanWeFixItApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddLogging(config =>
+            {
+                config.AddDebug();
+                config.AddConsole();
+            });
+            services.AddSingleton(typeof(ILogger), typeof(Logger<Startup>));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CanWeFixItApi", Version = "v1" });
             });
             services.AddSingleton<IDatabaseService, DatabaseService>();
+            services.AddSingleton<IDbConnection>(db => new SqliteConnection(Configuration.GetConnectionString("sqlite")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +53,7 @@ namespace CanWeFixItApi
             // Populate in-memory database with data
             var database = app.ApplicationServices.GetService(typeof(IDatabaseService)) as IDatabaseService;
             database?.SetupDatabase();
-            
+
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
